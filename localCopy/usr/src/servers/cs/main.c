@@ -1,5 +1,8 @@
 #include "inc.h"
 
+
+//PUPA
+
 int identifier = 0x1234;
 endpoint_t who_e;
 int call_type;
@@ -35,7 +38,9 @@ int main( int argc, char *argv[] )
     who_e = m.m_source;
     call_type = m.m_type;
 
-    if ( verbose ) printf( "CS: get %d from %d\n", call_type, who_e );
+    if ( verbose ) printf( "CS: get %d from %d\nm1_i1 = %d\n", call_type, who_e, m.m1_i1 );
+    
+    
 
 
     //        if ( ( r = sendnb( who_e, &m ) ) != OK ) printf( "IPC send error %d.\n", r );

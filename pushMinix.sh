@@ -1,2 +1,2 @@
 cd /mnt/shared
-cp -r -x /usr/src/$1 usr/src/$1
+cp -r -x $1 localCopy$1
