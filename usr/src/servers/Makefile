@@ -5,12 +5,12 @@
 
 .if ${MKIMAGEONLY} == "yes"
 
-SUBDIR=	ds init mfs pfs pm rs sched vfs vm myserver
+SUBDIR=	ds init mfs pfs pm rs sched vfs vm cs
 
 .else
 
 SUBDIR=	ds ext2 inet init ipc is iso9660fs \
-	mfs pfs pm procfs rs sched vfs vm devman myserver
+	mfs pfs pm procfs rs sched vfs vm devman cs
 
 .if ${MACHINE_ARCH} == "i386"
 SUBDIR+= hgfs vbfs
