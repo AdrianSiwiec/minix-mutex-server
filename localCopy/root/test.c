@@ -6,6 +6,7 @@
 
 int main()
 {
+  /*
   endpoint_t e;
   int res = minix_rs_lookup( "cs", &e );
 
@@ -25,6 +26,7 @@ int main()
   _sendrec( e, &m );
 
   printf( "Got: source: %d, type=%d, m1_i1=%d\n", m.m_source, m.m_type, m.m1_i1 );
+  */
   
   printf("Trying to cs_lock\n");
   

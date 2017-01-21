@@ -437,7 +437,12 @@ extern	 int optreset;		/* getopt(3) external variable */
 extern	 char *suboptarg;	/* getsubopt(3) external variable */
 #endif
 
+#ifndef __CS_LIB_DECLARED
+#define __CS_LIB_DECLARED
+
 int cs_lock(int mutex_id);
+
+#endif
 
 __END_DECLS
 

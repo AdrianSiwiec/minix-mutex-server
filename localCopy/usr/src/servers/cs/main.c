@@ -1,8 +1,5 @@
 #include "inc.h"
 
-
-// PUPA
-
 int identifier = 0x1234;
 endpoint_t who_e;
 int call_type;
@@ -40,19 +37,32 @@ int main( int argc, char *argv[] )
 
     if ( verbose ) printf( "CS: get %d from %d\nm1_i1 = %d\n", call_type, who_e, m.m1_i1 );
 
+    switch ( call_type )
+    {
+      case CS_LOCK:
+        lock( who_e, m.m1_i1 );
+        break;
 
+      case CS_UNLOCK:
+        unlock( who_e, m.m1_i1 );
+        break;
+
+      default:
+        if ( verbose ) printf( "Ignoring unknown call type\n" );
+    }
+
+    /* for reference
     m.m_type = 99;
     m.m1_i1 = 101;
     m.m_source = 102;
-    
+
     if ( ( r = sendnb( who_e, &m ) ) != OK )
     {
       printf( "Couldn't respond!" );
     }
 
     if ( verbose ) printf( "Responded succesfully\n" );
-
-
+    */
     //        if ( ( r = sendnb( who_e, &m ) ) != OK ) printf( "IPC send error %d.\n", r );
   }
 

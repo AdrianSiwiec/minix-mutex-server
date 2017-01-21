@@ -1,6 +1,6 @@
 # Makefile for IPC server
 PROG=	cs
-SRCS=	main.c
+SRCS=	main.c lock.c queue.c
 
 DPADD+=	${LIBSYS}
 LDADD+=	-lsys
