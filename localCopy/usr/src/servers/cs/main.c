@@ -86,6 +86,8 @@ static int sef_cb_init_fresh( int UNUSED( type ), sef_init_info_t *UNUSED( info 
   /* Initialize the ipc server. */
 
   if ( verbose ) printf( "STARTING!\n" );
+  
+  initLocks();
 
   return ( OK );
 }

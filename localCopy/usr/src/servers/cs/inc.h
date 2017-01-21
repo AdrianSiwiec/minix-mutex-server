@@ -29,14 +29,29 @@
 #include <time.h>
 #include <unistd.h>
 
+//Externs defined in main.c
 EXTERN int identifier;
 EXTERN endpoint_t who_e;
 EXTERN int call_type;
 EXTERN int verbose;
 
-typedef struct
-{
-  int *root, *head;
-} Queue;
+//Externs defined in lock.c
+EXTERN const int MAX_MUTEXES = 1030;
+
+//Externs defined in queue.c
 
 void initQueue( Queue *q );
+
+
+//Struct defs(!). Appropriate here?
+typedef struct
+{
+  int val;
+  struct QueueNode *next;
+} QueueNode;
+
+typedef struct
+{
+  QueueNode *root, *head;
+} Queue;
+
