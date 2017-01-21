@@ -1,7 +1,7 @@
 #include "inc.h"
 
 
-//PUPA
+// PUPA
 
 int identifier = 0x1234;
 endpoint_t who_e;
@@ -9,7 +9,7 @@ int call_type;
 int verbose = 1;
 
 static void sef_cb_signal_handler( int signo );
-static int sef_cb_init_fresh(int UNUSED(type), sef_init_info_t *UNUSED(info));
+static int sef_cb_init_fresh( int UNUSED( type ), sef_init_info_t *UNUSED( info ) );
 
 int main( int argc, char *argv[] )
 {
@@ -19,8 +19,8 @@ int main( int argc, char *argv[] )
 
   sef_setcb_init_fresh( sef_cb_init_fresh );
   sef_setcb_init_restart( sef_cb_init_fresh );
-  
-  sef_setcb_signal_handler(sef_cb_signal_handler);
+
+  sef_setcb_signal_handler( sef_cb_signal_handler );
 
   sef_startup();
 
@@ -39,8 +39,18 @@ int main( int argc, char *argv[] )
     call_type = m.m_type;
 
     if ( verbose ) printf( "CS: get %d from %d\nm1_i1 = %d\n", call_type, who_e, m.m1_i1 );
+
+
+    m.m_type = 99;
+    m.m1_i1 = 101;
+    m.m_source = 102;
     
-    
+    if ( ( r = sendnb( who_e, &m ) ) != OK )
+    {
+      printf( "Couldn't respond!" );
+    }
+
+    if ( verbose ) printf( "Responded succesfully\n" );
 
 
     //        if ( ( r = sendnb( who_e, &m ) ) != OK ) printf( "IPC send error %d.\n", r );
@@ -58,7 +68,7 @@ static void sef_cb_signal_handler( int signo )
   if ( signo != SIGTERM ) return;
 
   /* Checkout if there are still IPC keys. Inform the user in that case. */
-  //if ( !is_sem_nil() || !is_shm_nil() ) printf( "IPC: exit with un-clean states.\n" );
+  // if ( !is_sem_nil() || !is_shm_nil() ) printf( "IPC: exit with un-clean states.\n" );
 }
 
 static int sef_cb_init_fresh( int UNUSED( type ), sef_init_info_t *UNUSED( info ) )
