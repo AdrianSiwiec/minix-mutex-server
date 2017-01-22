@@ -13,6 +13,14 @@ void initQueue( Queue *q )
   q->root = q->head = 0;
 }
 
+void clearQueue( Queue *q )
+{
+  while ( !isEmpty( q ) )
+  {
+    pop( q );
+  }
+}
+
 int isEmpty( Queue *q )
 {
   return q->root == 0;

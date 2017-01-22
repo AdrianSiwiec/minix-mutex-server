@@ -441,6 +441,7 @@ extern	 char *suboptarg;	/* getsubopt(3) external variable */
 #define __CS_LIB_DECLARED
 
 int cs_lock(int mutex_id);
+int cs_unlock(int mutex_id);
 
 #endif
 

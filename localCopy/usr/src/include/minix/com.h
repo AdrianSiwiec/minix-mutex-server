@@ -1284,6 +1284,7 @@
 
 #define CS_ANS_OK 1
 #define CS_ANS_AGAIN 2
+#define CS_ANS_WRONG 3
 
 #define CS_LOCK 11
 #define CS_UNLOCK 12

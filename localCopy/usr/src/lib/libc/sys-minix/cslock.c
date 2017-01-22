@@ -10,9 +10,9 @@ int initialize();
 
 int cs_lock( int mutex_id )
 {
-  if ( !isInitialized ) initialize();
-
   if ( verbose ) printf( "CS LOCK for: %d\n", mutex_id );
+
+  if ( !isInitialized ) initialize();
 
   message m;
 
@@ -22,10 +22,36 @@ int cs_lock( int mutex_id )
     m.m1_i1 = mutex_id;
 
     _sendrec( csEndpoint, &m );
-    
-  } while ( m.m_type != CS_ANS_OK );
+
+  } while ( m.m_type == CS_ANS_AGAIN );
 
   return 0;
+}
+
+int cs_unlock( int mutex_id )
+{
+  if ( verbose ) printf( "CS UNLOCK for: %d\n", mutex_id );
+
+  if ( !isInitialized )
+  {
+    errno = EPERM;
+    return -1;
+  }
+
+  message m;
+
+  do
+  {
+    m.m_type = CS_UNLOCK;
+    m.m1_i1 = mutex_id;
+
+    _sendrec( csEndpoint, &m );
+  } while ( m.m_type == CS_ANS_AGAIN );  // probably will never happen
+
+  if ( m.m_type == CS_ANS_OK )
+    return 0;
+  else
+    return -1;
 }
 
 int initialize()

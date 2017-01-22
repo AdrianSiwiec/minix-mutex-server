@@ -29,20 +29,6 @@
 #include <time.h>
 #include <unistd.h>
 
-//Externs defined in main.c
-EXTERN int identifier;
-EXTERN endpoint_t who_e;
-EXTERN int call_type;
-EXTERN int verbose;
-
-//Externs defined in lock.c
-EXTERN const int MAX_MUTEXES = 1030;
-
-//Externs defined in queue.c
-
-void initQueue( Queue *q );
-
-
 //Struct defs(!). Appropriate here?
 typedef struct
 {
@@ -55,3 +41,30 @@ typedef struct
   QueueNode *root, *head;
 } Queue;
 
+//Externs defined in main.c
+EXTERN int identifier;
+EXTERN endpoint_t who_e;
+EXTERN int call_type;
+EXTERN int verbose;
+
+//Externs defined in lock.c
+EXTERN const int MAX_MUTEXES;
+
+void initLocks();
+void cleanLocks();
+void lock( int callerId, int mutexId );
+void unlock( int callerId, int mutexId );
+
+//Externs defined in queue.c
+
+void initQueue( Queue *q );
+void clearQueue( Queue *q );
+int isEmpty( Queue *q );
+void enqueue( Queue *q, int a );
+int top( Queue *q );
+void pop( Queue *q );
+void printQueue( Queue *q );
+
+//Externs defined in sender.c
+
+void sendResponse( int procNr, int response );

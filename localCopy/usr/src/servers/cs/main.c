@@ -10,16 +10,13 @@ static int sef_cb_init_fresh( int UNUSED( type ), sef_init_info_t *UNUSED( info 
 
 int main( int argc, char *argv[] )
 {
-  message m;
-
   env_setargs( argc, argv );
-
   sef_setcb_init_fresh( sef_cb_init_fresh );
   sef_setcb_init_restart( sef_cb_init_fresh );
-
   sef_setcb_signal_handler( sef_cb_signal_handler );
-
   sef_startup();
+
+  message m;
 
   if ( verbose ) printf( "Hello, world from cs\n" );
 
@@ -77,6 +74,8 @@ static void sef_cb_signal_handler( int signo )
   /* Only check for termination signal, ignore anything else. */
   if ( signo != SIGTERM ) return;
 
+  cleanLocks();
+
   /* Checkout if there are still IPC keys. Inform the user in that case. */
   // if ( !is_sem_nil() || !is_shm_nil() ) printf( "IPC: exit with un-clean states.\n" );
 }
@@ -86,7 +85,7 @@ static int sef_cb_init_fresh( int UNUSED( type ), sef_init_info_t *UNUSED( info 
   /* Initialize the ipc server. */
 
   if ( verbose ) printf( "STARTING!\n" );
-  
+
   initLocks();
 
   return ( OK );
