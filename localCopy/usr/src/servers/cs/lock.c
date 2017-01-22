@@ -2,10 +2,6 @@
 
 #include "inc.h"
 
-// Public
-const int MAX_MUTEXES = 1030;
-
-// Private
 Queue lockQueues[MAX_MUTEXES];
 int mutexIds[MAX_MUTEXES];
 int mutexHolders[MAX_MUTEXES];
@@ -26,8 +22,23 @@ void cleanLocks()
   firstFreeMutexIndex = 0;
 }
 
+int hasLock( int callerId, int mutexId )
+{
+  for ( int i = 0; i < firstFreeMutexIndex; i++ )
+  {
+    if ( mutexIds[i] == mutexId )
+    {
+      return mutexHolders[i] == callerId;
+    }
+  }
+
+  return 0;
+}
+
 void swapLocks( int a, int b )
 {
+  if ( a == b ) return;
+
   Queue tmpQ = lockQueues[a];
   lockQueues[a] = lockQueues[b];
   lockQueues[b] = tmpQ;
@@ -68,41 +79,40 @@ void lock( int callerId, int mutexId )
   if ( verbose ) printf( "Got lock %d! callerId = %d\n", mutexId, callerId );
 }
 
-void unlock( int callerId, int mutexId )
+void unlock( int callerId, int mutexId, int notifyCaller )
 {
   if ( verbose ) printf( "Unlocking %d...\n", callerId );
+
+  if ( !hasLock( callerId, mutexId ) )
+  {
+    if ( verbose ) printf( "Trying to unlock wrong mutex %d\n", mutexId );
+
+    if ( notifyCaller ) sendResponse( callerId, CS_ANS_WRONG );
+
+    return;
+  }
 
   for ( int i = 0; i < firstFreeMutexIndex; i++ )
   {
     if ( mutexIds[i] == mutexId )
     {
-      if ( mutexHolders[i] != callerId )
+      if ( isEmpty( lockQueues + i ) )
       {
-        sendResponse( callerId, CS_ANS_WRONG );
+        swapLocks( i, firstFreeMutexIndex - 1 );
+        firstFreeMutexIndex--;
       }
       else
       {
-        if ( isEmpty( lockQueues + i ) )
-        {
-          swapLocks( i, firstFreeMutexIndex - 1 );
-          firstFreeMutexIndex--;
-        }
-        else
-        {
-          int toWake = top( lockQueues + i );
-          pop( lockQueues + i );
-          mutexHolders[i] = toWake;
-          sendResponse( toWake, CS_ANS_OK );
-        }
+        int toWake = top( lockQueues + i );
+        pop( lockQueues + i );
+        mutexHolders[i] = toWake;
 
-        sendResponse( callerId, CS_ANS_OK );
+        sendResponse( toWake, CS_ANS_OK );
       }
+
+      if ( notifyCaller ) sendResponse( callerId, CS_ANS_OK );
 
       return;
     }
   }
-
-  sendResponse( callerId, CS_ANS_WRONG );
-
-  if ( verbose ) printf( "Trying to unlock wrong mutex %d\n", mutexId );
 }

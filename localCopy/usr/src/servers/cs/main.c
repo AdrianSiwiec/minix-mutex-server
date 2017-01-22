@@ -23,7 +23,6 @@ int main( int argc, char *argv[] )
   while ( TRUE )
   {
     int r;
-    int ipc_number;
 
     if ( verbose ) printf( "\nWaiting for message...\n" );
 
@@ -41,7 +40,7 @@ int main( int argc, char *argv[] )
         break;
 
       case CS_UNLOCK:
-        unlock( who_e, m.m1_i1 );
+        unlock( who_e, m.m1_i1, 1 );
         break;
 
       case CS_WAIT:
@@ -49,7 +48,7 @@ int main( int argc, char *argv[] )
         break;
 
       case CS_BROADCAST:
-        broadcast( m.m1_i2 );
+        broadcast( who_e, m.m1_i2 );
         break;
 
       default:
@@ -83,6 +82,7 @@ static void sef_cb_signal_handler( int signo )
   if ( signo != SIGTERM ) return;
 
   cleanLocks();
+  cleanWaits();
 
   /* Checkout if there are still IPC keys. Inform the user in that case. */
   // if ( !is_sem_nil() || !is_shm_nil() ) printf( "IPC: exit with un-clean states.\n" );
@@ -95,6 +95,7 @@ static int sef_cb_init_fresh( int UNUSED( type ), sef_init_info_t *UNUSED( info 
   if ( verbose ) printf( "STARTING!\n" );
 
   initLocks();
+  initWaits();
 
   return ( OK );
 }

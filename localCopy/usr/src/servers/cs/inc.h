@@ -29,6 +29,8 @@
 #include <time.h>
 #include <unistd.h>
 
+#define MAX_MUTEXES 1030
+
 // Struct defs(!). Appropriate here?
 typedef struct
 {
@@ -48,12 +50,12 @@ EXTERN int call_type;
 EXTERN int verbose;
 
 // Externs defined in lock.c
-EXTERN const int MAX_MUTEXES;
 
 void initLocks();
 void cleanLocks();
+int hasLock( int callerId, int mutexId );
 void lock( int callerId, int mutexId );
-void unlock( int callerId, int mutexId );
+void unlock( int callerId, int mutexId, int notifyCaller );
 
 // Externs defined in queue.c
 
@@ -71,5 +73,7 @@ void sendResponse( int procNr, int response );
 
 // Externs defined in wait.c
 
+void initWaits();
+void cleanWaits();
 void wait( int callerId, int mutexId, int condId );
-void broadcast( int condId );
+void broadcast( int callerId, int condId );

@@ -91,7 +91,7 @@ int cs_broadcast( int cond_var_id )
 {
   if ( verbose ) printf( "CS BROADCAST for condition: %d\n", cond_var_id );
 
-  if ( !isInitialized ) return 0;
+  if ( !isInitialized ) initialize();
 
   message m;
 
@@ -101,7 +101,7 @@ int cs_broadcast( int cond_var_id )
     m.m1_i2 = cond_var_id;
 
     _sendrec( csEndpoint, &m );
-  } while ( m.m_type == CS_ANS_AGAIN ); //probably should not happen
+  } while ( m.m_type == CS_ANS_AGAIN );  // probably should not happen
 
   return 0;
 }

@@ -6,17 +6,31 @@
 
 int main()
 {
-  fork();
+  int s = fork();
 
-  printf( "Trying for lock..\n" );
+  if ( s )
+  {
+    int s2 = fork();
+    printf( "Trying for lock..\n" );
 
-  cs_lock( 1 );
+    cs_lock( s2 );
 
-  printf( "Got lock..\n" );
+    printf( "Got lock..\n" );
+    printf( "Waiting for 8\n" );
 
-  sleep( 1 );
+    int res = cs_wait( 8, s2 );
 
-  cs_unlock( 1 );
+    printf( "Got back from wait with res = %d\n", res );
 
-  printf( "Unlocked\n" );
+    cs_unlock( s2 );
+
+    printf( "Unlocked\n" );
+  }
+  else
+  {
+    sleep( 2 );
+    printf( "Broadcasting 8\n" );
+    cs_broadcast( 8 );
+    printf( "Came back from broadcast\n" );
+  }
 }
