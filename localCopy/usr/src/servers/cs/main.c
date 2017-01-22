@@ -25,14 +25,14 @@ int main( int argc, char *argv[] )
     int r;
     int ipc_number;
 
-    if ( verbose ) printf( "Waiting for message...\n" );
+    if ( verbose ) printf( "\nWaiting for message...\n" );
 
     if ( ( r = sef_receive( ANY, &m ) ) != OK ) printf( "sef_receive failed %d.\n", r );
 
     who_e = m.m_source;
     call_type = m.m_type;
 
-    if ( verbose ) printf( "CS: get %d from %d\nm1_i1 = %d\n", call_type, who_e, m.m1_i1 );
+    //if ( verbose ) printf( "CS: get %d from %d m1_i1 = %d\n", call_type, who_e, m.m1_i1 );
 
     switch ( call_type )
     {

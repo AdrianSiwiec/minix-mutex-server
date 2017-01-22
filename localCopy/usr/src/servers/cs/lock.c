@@ -43,7 +43,7 @@ void swapLocks( int a, int b )
 
 void lock( int callerId, int mutexId )
 {
-  if ( verbose ) printf( "Locking %d...\n", mutexId );
+  if ( verbose ) printf( "Locking %d for %d\n", mutexId, callerId );
 
   for ( int i = 0; i < firstFreeMutexIndex; i++ )
   {
@@ -51,7 +51,7 @@ void lock( int callerId, int mutexId )
     {
       enqueue( lockQueues + i, callerId );
 
-      if ( verbose ) printf( "Enqueued for lock %d\n", mutexId );
+      if ( verbose ) printf( "Enqueued for lock %d, callerId = %d\n", mutexId, callerId );
 
       return;
     }
@@ -61,14 +61,16 @@ void lock( int callerId, int mutexId )
   mutexHolders[firstFreeMutexIndex] = callerId;
   initQueue( lockQueues + firstFreeMutexIndex );
 
+  firstFreeMutexIndex++;
+
   sendResponse( callerId, CS_ANS_OK );
 
-  if ( verbose ) printf( "Locking %d done\n", mutexId );
+  if ( verbose ) printf( "Got lock %d! callerId = %d\n", mutexId, callerId );
 }
 
 void unlock( int callerId, int mutexId )
 {
-  if ( verbose ) printf( "Unlocking %d...\n" );
+  if ( verbose ) printf( "Unlocking %d...\n", callerId );
 
   for ( int i = 0; i < firstFreeMutexIndex; i++ )
   {
