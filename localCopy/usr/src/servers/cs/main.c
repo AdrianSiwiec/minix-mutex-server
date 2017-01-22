@@ -32,7 +32,7 @@ int main( int argc, char *argv[] )
     who_e = m.m_source;
     call_type = m.m_type;
 
-    //if ( verbose ) printf( "CS: get %d from %d m1_i1 = %d\n", call_type, who_e, m.m1_i1 );
+    // if ( verbose ) printf( "CS: get %d from %d m1_i1 = %d\n", call_type, who_e, m.m1_i1 );
 
     switch ( call_type )
     {
@@ -42,6 +42,14 @@ int main( int argc, char *argv[] )
 
       case CS_UNLOCK:
         unlock( who_e, m.m1_i1 );
+        break;
+
+      case CS_WAIT:
+        wait( who_e, m.m1_i1, m.m1_i2 );
+        break;
+
+      case CS_BROADCAST:
+        broadcast( m.m1_i2 );
         break;
 
       default:

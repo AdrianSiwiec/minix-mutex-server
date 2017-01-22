@@ -1288,6 +1288,8 @@
 
 #define CS_LOCK 11
 #define CS_UNLOCK 12
+#define CS_WAIT 13
+#define CS_BROADCAST 14
 
 
 /* _MINIX_COM_H */
