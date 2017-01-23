@@ -51,6 +51,9 @@ int main( int argc, char *argv[] )
         broadcast( who_e, m.m1_i2 );
         break;
 
+      case CS_NOTIFY_FROM_PM:
+        parseNotify( m.mi_i1 );
+
       default:
         if ( verbose ) printf( "Ignoring unknown call type\n" );
     }

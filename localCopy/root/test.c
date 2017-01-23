@@ -6,6 +6,9 @@
 
 int main()
 {
+  pause();
+  printf("Unpaused\n");
+  /*
   int s = fork();
 
   if ( s )
@@ -33,4 +36,5 @@ int main()
     cs_broadcast( 8 );
     printf( "Came back from broadcast\n" );
   }
+  */
 }

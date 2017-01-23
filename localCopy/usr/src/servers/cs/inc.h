@@ -56,6 +56,7 @@ void cleanLocks();
 int hasLock( int callerId, int mutexId );
 void lock( int callerId, int mutexId );
 void unlock( int callerId, int mutexId, int notifyCaller );
+void parseNotify( int procId );
 
 // Externs defined in queue.c
 

@@ -116,3 +116,8 @@ void unlock( int callerId, int mutexId, int notifyCaller )
     }
   }
 }
+
+void parseNotify( int procId )
+{
+   //TODO
+}
