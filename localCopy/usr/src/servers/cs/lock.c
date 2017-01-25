@@ -99,6 +99,7 @@ void unlock( int callerId, int mutexId, int notifyCaller )
       if ( isEmpty( lockQueues + i ) )
       {
         swapLocks( i, firstFreeMutexIndex - 1 );
+        i--;
         firstFreeMutexIndex--;
       }
       else
@@ -123,31 +124,7 @@ int removeFromLockQueues( int procId )
 
   for ( int i = 0; i < firstFreeMutexIndex; i++ )
   {
-    QueueNode *father = lockQueues[i].root;
-
-    if ( father == 0 ) continue;
-
-    QueueNode *ptr = father->next;
-
-    while ( ptr != 0 )
-    {
-      if ( ptr->val == procId )
-      {
-        wasInQueues = 1;
-        father->next = ptr->next;
-
-        if ( isEmpty( lockQueues + i ) )
-        {
-          swapLocks( i, firstFreeMutexIndex - 1 );
-          firstFreeMutexIndex--;
-        }
-
-        break;
-      }
-
-      ptr++;
-      father++;
-    }
+    if ( removeFromQueue( lockQueues + i, procId ) ) wasInQueues = 1;
   }
 
   return wasInQueues;

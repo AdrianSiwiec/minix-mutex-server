@@ -95,6 +95,7 @@ void broadcast( int callerId, int condId )
       }
 
       swapWaitingQueues( i, firstFreeCondIndex - 1 );
+      i--;
       firstFreeCondIndex--;
 
       break;
@@ -108,40 +109,12 @@ void parseExitSignalBroadcasts( int procId, int relock )
 {
   for ( int i = 0; i < firstFreeCondIndex; i++ )
   {
-    QueueNode *mutexFather = waitingMutexIds[i].root;
+    int mutexToLockOn;
 
-    if ( mutexFather == 0 ) continue;
-
-    QueueNode *mutexPtr = mutexFather->next;
-
-    QueueNode *callerFather = waitingCallerIds[i].root;
-    QueueNode *callerPtr = callerFather->next;
-
-    while ( mutexPtr != 0 )
+    if ( removeFromTwinQueues( waitingMutexIds + i, waitingMutexIds + i, procId, &mutexToLockOn ) && relock )
     {
-      if ( callerPtr->val == procId )
-      {
-        mutexFather->next = mutexPtr->next;
-        callerFather->next = callerPtr->next;
-
-        if ( isEmpty( waitingMutexIds + i ) )
-        {
-          swapWaitingQueues( i, firstFreeCondIndex - 1 );
-          firstFreeCondIndex--;
-        }
-
-        if ( relock )
-        {
-          lock( procId, mutexPtr->val );
-        }
-
-        break;
-      }
-
-      mutexFather++;
-      mutexPtr++;
-      callerFather++;
-      callerPtr++;
+      lock( procId, mutexToLockOn );
+      break;
     }
   }
 }

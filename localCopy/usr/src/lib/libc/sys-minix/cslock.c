@@ -2,7 +2,7 @@
 #include <minix/com.h>
 #include <stdio.h>
 
-int verbose = 1;
+int verbose = 0;
 int isInitialized = 0;
 endpoint_t csEndpoint;
 

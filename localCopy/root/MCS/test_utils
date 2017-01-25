@@ -10,6 +10,7 @@ skip(){
 mdiff(){
 	diff $OUT/$1 $TEMPLATE/$2 > /dev/null
 	if [ $? != 0 ]; then  echo FAIL; else echo OK; fi
+	diff $OUT/$1 $TEMPLATE/$2
 }
 
 run(){

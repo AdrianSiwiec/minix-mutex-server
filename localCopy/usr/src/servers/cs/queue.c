@@ -70,6 +70,81 @@ void pop( Queue *q )
   }
 }
 
+void removeQueueNode( QueueNode *ptr, QueueNode *father )
+{
+  father->next = ptr->next;
+  free( ptr );
+}
+
+int removeFromQueue( Queue *q, int a )
+{
+  if ( isEmpty( q ) ) return 0;
+
+  if ( a == q->root->val )
+  {
+    pop( q );
+    return 1;
+  }
+  else
+  {
+    QueueNode *father = q->root;
+    QueueNode *ptr = father->next;
+
+    while ( ptr != 0 )
+    {
+      if ( ptr->val == a )
+      {
+        removeQueueNode( ptr, father );
+        return 1;
+      }
+
+      father = ptr;
+      ptr = ptr->next;
+    }
+
+    return 0;
+  }
+}
+
+int removeFromTwinQueues( Queue *q, Queue *twin, int a, int *container )
+{
+  if ( isEmpty( q ) ) return 0;
+
+  if ( a == q->root->val )
+  {
+    pop( q );
+    *container = top( twin );
+    pop( twin );
+    return 1;
+  }
+  else
+  {
+    QueueNode *father = q->root;
+    QueueNode *ptr = father->next;
+    QueueNode *twinFather = twin->root;
+    QueueNode *twinPtr = twinFather->next;
+
+    while ( ptr != 0 )
+    {
+      if ( ptr->val == a )
+      {
+        *container == twinPtr->val;
+        removeQueueNode( ptr, father );
+        removeQueueNode( twinPtr, twinFather );
+        return 1;
+      }
+
+      father = ptr;
+      ptr = ptr->next;
+
+      twinFather = twinPtr;
+      twinPtr = twinPtr->next;
+    }
+
+    return 0;
+  }
+}
+
 void printQueue( Queue *q )
 {
   printf( "Printing queue: " );

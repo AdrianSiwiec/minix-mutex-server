@@ -16,6 +16,7 @@ echo Test 1: lock na 1, unlock na 2, unlock na 1, unlock na 1
 run 1 lock_unlock u1t1r1.out u1t1.out
 run 2 lock_unlock u1t1r1.out u1t1.out
 
+
 echo Test 2: wiele lockow i unlockow, 1 process, rozna kolejnosc
 
 run 1 simple_many u1t2r1.out u1t2.out

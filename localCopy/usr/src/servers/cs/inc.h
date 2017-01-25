@@ -67,6 +67,8 @@ void enqueue( Queue *q, int a );
 int top( Queue *q );
 void pop( Queue *q );
 void printQueue( Queue *q );
+int removeFromQueue( Queue *q, int a );
+int removeFromTwinQueues( Queue *q, Queue *twin, int a, int *container );
 
 // Externs defined in sender.c
 
