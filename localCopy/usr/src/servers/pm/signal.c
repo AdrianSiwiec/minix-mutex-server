@@ -324,6 +324,8 @@ int ksig;			/* non-zero means signal comes from kernel  */
  * If there is insufficient stack space, kill the process.
  */
   int r, slot, badignore;
+  
+  tell_cs( rmp->mp_endpoint, CS_SIGNAL_FROM_PM );
 
   slot = (int) (rmp - mproc);
   if ((rmp->mp_flags & (IN_USE | EXITING)) != IN_USE) {
@@ -691,7 +693,6 @@ struct mproc *rmp;		/* which process */
   m.PM_PROC = rmp->mp_endpoint;
 
   tell_vfs(rmp, &m);
-  tell_cs( rmp->mp_endpoint, CS_SIGNAL_FROM_PM );
 
   /* Also tell VM. */
   vm_notify_sig_wrapper(rmp->mp_endpoint);
