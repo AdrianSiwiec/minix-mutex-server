@@ -31,7 +31,7 @@ int main( int argc, char *argv[] )
     who_e = m.m_source;
     call_type = m.m_type;
 
-    // if ( verbose ) printf( "CS: get %d from %d m1_i1 = %d\n", call_type, who_e, m.m1_i1 );
+    if ( verbose ) printf( "CS: get %d from %d m1_i1 = %d\n", call_type, who_e, m.m1_i1 );
 
     switch ( call_type )
     {
@@ -51,11 +51,18 @@ int main( int argc, char *argv[] )
         broadcast( who_e, m.m1_i2 );
         break;
 
-      case CS_NOTIFY_FROM_PM:
-        parseNotify( m.mi_i1 );
+      case CS_SIGNAL_FROM_PM:
+        parseNotifyLocks( m.m1_i1 );
+        parseExitSignalBroadcasts( m.m1_i1, 1 );
+        break;
+
+      case CS_EXIT_FROM_PM:  // todo in pm
+        parseExitLocks( m.m1_i1 );
+        parseExitSignalBroadcasts( m.m1_i1, 0 );
+        break;
 
       default:
-        if ( verbose ) printf( "Ignoring unknown call type\n" );
+        if ( verbose ) printf( "Ignoring unknown call type: %d\n", call_type );
     }
 
     /* for reference

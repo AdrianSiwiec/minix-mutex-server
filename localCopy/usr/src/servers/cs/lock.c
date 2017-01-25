@@ -117,7 +117,62 @@ void unlock( int callerId, int mutexId, int notifyCaller )
   }
 }
 
-void parseNotify( int procId )
+int removeFromLockQueues( int procId )
 {
-   //TODO
+  int wasInQueues = 0;
+
+  for ( int i = 0; i < firstFreeMutexIndex; i++ )
+  {
+    QueueNode *father = lockQueues[i].root;
+
+    if ( father == 0 ) continue;
+
+    QueueNode *ptr = father->next;
+
+    while ( ptr != 0 )
+    {
+      if ( ptr->val == procId )
+      {
+        wasInQueues = 1;
+        father->next = ptr->next;
+
+        if ( isEmpty( lockQueues + i ) )
+        {
+          swapLocks( i, firstFreeMutexIndex - 1 );
+          firstFreeMutexIndex--;
+        }
+
+        break;
+      }
+
+      ptr++;
+      father++;
+    }
+  }
+
+  return wasInQueues;
+}
+
+void parseNotifyLocks( int procId )
+{
+  if ( verbose ) printf( "PARSING NOTIFY procId = %d\n", procId );
+
+  int wasInQueues = removeFromLockQueues( procId );
+
+  if ( wasInQueues ) sendResponse( procId, CS_ANS_AGAIN );
+}
+
+void parseExitLocks( int procId )
+{
+  if ( verbose ) printf( "PARSING EXIT procId = %d\n", procId );
+
+  removeFromLockQueues( procId );
+
+  for ( int i = 0; i < firstFreeMutexIndex; i++ )
+  {
+    if ( mutexHolders[i] == procId )
+    {
+      unlock( procId, mutexIds[i], 0 );
+    }
+  }
 }

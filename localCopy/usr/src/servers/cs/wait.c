@@ -103,3 +103,45 @@ void broadcast( int callerId, int condId )
 
   sendResponse( callerId, CS_ANS_OK );
 }
+
+void parseExitSignalBroadcasts( int procId, int relock )
+{
+  for ( int i = 0; i < firstFreeCondIndex; i++ )
+  {
+    QueueNode *mutexFather = waitingMutexIds[i].root;
+
+    if ( mutexFather == 0 ) continue;
+
+    QueueNode *mutexPtr = mutexFather->next;
+
+    QueueNode *callerFather = waitingCallerIds[i].root;
+    QueueNode *callerPtr = callerFather->next;
+
+    while ( mutexPtr != 0 )
+    {
+      if ( callerPtr->val == procId )
+      {
+        mutexFather->next = mutexPtr->next;
+        callerFather->next = callerPtr->next;
+
+        if ( isEmpty( waitingMutexIds + i ) )
+        {
+          swapWaitingQueues( i, firstFreeCondIndex - 1 );
+          firstFreeCondIndex--;
+        }
+
+        if ( relock )
+        {
+          lock( procId, mutexPtr->val );
+        }
+
+        break;
+      }
+
+      mutexFather++;
+      mutexPtr++;
+      callerFather++;
+      callerPtr++;
+    }
+  }
+}

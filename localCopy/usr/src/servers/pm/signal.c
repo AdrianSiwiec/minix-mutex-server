@@ -651,7 +651,6 @@ struct mproc *rmp;		/* which process */
   message m;
   int r;
   
-  tell_cs( rmp->mp_endpoint, CS_NOTIFY_FROM_PM )
 
   /* If we're already waiting for a delayed call, don't do anything now. */
   if (rmp->mp_flags & DELAY_CALL)
@@ -692,6 +691,7 @@ struct mproc *rmp;		/* which process */
   m.PM_PROC = rmp->mp_endpoint;
 
   tell_vfs(rmp, &m);
+  tell_cs( rmp->mp_endpoint, CS_SIGNAL_FROM_PM );
 
   /* Also tell VM. */
   vm_notify_sig_wrapper(rmp->mp_endpoint);

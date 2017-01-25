@@ -6,35 +6,15 @@
 
 int main()
 {
-  pause();
-  printf("Unpaused\n");
-  /*
-  int s = fork();
+  // int s = fork();
 
-  if ( s )
-  {
-    int s2 = fork();
-    printf( "Trying for lock..\n" );
+  printf( "Trying for lock.. my pid = %d\n", getpid() );
 
-    cs_lock( s2 );
+  cs_lock( 1 );
 
-    printf( "Got lock..\n" );
-    printf( "Waiting for 8\n" );
+  printf( "Got lock..\n" );
+  
+  cs_wait( 1, 1 );
 
-    int res = cs_wait( 8, s2 );
-
-    printf( "Got back from wait with res = %d\n", res );
-
-    cs_unlock( s2 );
-
-    printf( "Unlocked\n" );
-  }
-  else
-  {
-    sleep( 2 );
-    printf( "Broadcasting 8\n" );
-    cs_broadcast( 8 );
-    printf( "Came back from broadcast\n" );
-  }
-  */
+  printf( "Exiting, my pid=%d\n", getpid() );
 }

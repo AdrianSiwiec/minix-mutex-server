@@ -1291,7 +1291,8 @@
 #define CS_WAIT 13
 #define CS_BROADCAST 14
 
-#define CS_NOTIFY_FROM_PM 20
+#define CS_SIGNAL_FROM_PM 20
+#define CS_EXIT_FROM_PM 21
 
 
 /* _MINIX_COM_H */

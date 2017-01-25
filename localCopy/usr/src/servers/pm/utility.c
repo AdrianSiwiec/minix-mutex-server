@@ -150,27 +150,24 @@ message *m_ptr;
   rmp->mp_flags |= VFS_CALL;
 }
 
-void tell_cs( int procNr, int callNr )
+void tell_cs( endpoint_t procNr, int callNr )
 {
   message m;
 
   m.m_type = callNr;
   m.m1_i1 = procNr;
 
-  int csEndpoint;
+  endpoint_t csEndpoint;
 
-  for ( int i = 0; i < procs_in_use; i++ )
+  register struct mproc *rmp;
+  for (rmp = &mproc[0]; rmp < &mproc[NR_PROCS]; rmp++)
   {
-    if ( mp[i].mp_name[0] == 'c' && mp[i].mp_name[1] == 's' && mp[i].mp_name[2] == 0 )
+    if ( (rmp->mp_flags & IN_USE) && rmp->mp_name[0] == 'c' && rmp->mp_name[1] == 's' && rmp->mp_name[2] == 0 )
     {
-      csEndpoint = mp[i].mp_pid;
-      asynsend3( csEndpoint, &m, 0 );
-      printf("PM SENDS CS MESSAGE: name: %s, pid: %d", mp[i].mp_name, mp[i].mp_pid);
+      csEndpoint = rmp->mp_endpoint;
+      asynsend3( csEndpoint, &m, AMF_NOREPLY );
       return;
     }
   }
   
-  printf("PM COULD NOT FIND CS!!!");
-
-
 }
