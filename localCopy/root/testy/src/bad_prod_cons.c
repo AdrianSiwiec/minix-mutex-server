@@ -5,7 +5,7 @@
 #include <string.h>
 #include <signal.h>
 
-#include <cv.h>
+#include <unistd.h>
 
 #include "utils.h"
 

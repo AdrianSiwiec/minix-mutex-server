@@ -2,7 +2,7 @@
 #include <errno.h>
 #include <string.h>
 
-#include <cv.h>
+#include <unistd.h>
 
 #include "utils.h"
 
