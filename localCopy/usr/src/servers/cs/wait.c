@@ -46,6 +46,7 @@ void wait( int callerId, int mutexId, int condId )
   if ( !hasLock( callerId, mutexId ) )
   {
     sendResponse( callerId, CS_ANS_WRONG );
+    return;
   }
 
   int foundCondition = 0;

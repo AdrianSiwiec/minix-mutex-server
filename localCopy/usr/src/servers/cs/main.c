@@ -56,7 +56,7 @@ int main( int argc, char *argv[] )
         parseExitSignalBroadcasts( m.m1_i1, 1 );
         break;
 
-      case CS_EXIT_FROM_PM:  // todo in pm
+      case CS_EXIT_FROM_PM: 
         parseExitLocks( m.m1_i1 );
         parseExitSignalBroadcasts( m.m1_i1, 0 );
         break;
