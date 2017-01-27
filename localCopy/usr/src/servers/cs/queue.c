@@ -7,7 +7,6 @@ void initQueueNode( QueueNode *qn, int val )
   qn->next = 0;
 }
 
-
 void initQueue( Queue *q )
 {
   q->root = q->head = 0;

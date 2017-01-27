@@ -11,6 +11,7 @@ void initWaits()
 {
   firstFreeCondIndex = 0;
 }
+
 void cleanWaits()
 {
   for ( int i = 0; i < firstFreeCondIndex; i++ )

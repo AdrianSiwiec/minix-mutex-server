@@ -3,7 +3,7 @@
 int identifier = 0x1234;
 endpoint_t who_e;
 int call_type;
-int verbose = 1;
+int verbose = 0;
 
 static void sef_cb_signal_handler( int signo );
 static int sef_cb_init_fresh( int UNUSED( type ), sef_init_info_t *UNUSED( info ) );
@@ -26,7 +26,7 @@ int main( int argc, char *argv[] )
 
     if ( verbose ) printf( "\nWaiting for message...\n" );
 
-    if ( ( r = sef_receive( ANY, &m ) ) != OK ) printf( "sef_receive failed %d.\n", r );
+    if ( ( r = sef_receive( ANY, &m ) ) != OK ) printf( "CS: Unexpected error, sef_receive failed %d.\n", r );
 
     who_e = m.m_source;
     call_type = m.m_type;
@@ -65,19 +65,6 @@ int main( int argc, char *argv[] )
         if ( verbose ) printf( "Ignoring unknown call type: %d\n", call_type );
     }
 
-    /* for reference
-    m.m_type = 99;
-    m.m1_i1 = 101;
-    m.m_source = 102;
-
-    if ( ( r = sendnb( who_e, &m ) ) != OK )
-    {
-      printf( "Couldn't respond!" );
-    }
-
-    if ( verbose ) printf( "Responded succesfully\n" );
-    */
-    //        if ( ( r = sendnb( who_e, &m ) ) != OK ) printf( "IPC send error %d.\n", r );
   }
 
   /* no way to get here */
@@ -88,21 +75,16 @@ static void sef_cb_signal_handler( int signo )
 {
   if ( verbose ) printf( "Got signal %d\n", signo );
 
-  /* Only check for termination signal, ignore anything else. */
   if ( signo != SIGTERM ) return;
 
   cleanLocks();
   cleanWaits();
 
-  /* Checkout if there are still IPC keys. Inform the user in that case. */
-  // if ( !is_sem_nil() || !is_shm_nil() ) printf( "IPC: exit with un-clean states.\n" );
 }
 
 static int sef_cb_init_fresh( int UNUSED( type ), sef_init_info_t *UNUSED( info ) )
 {
-  /* Initialize the ipc server. */
-
-  if ( verbose ) printf( "STARTING!\n" );
+  if ( verbose ) printf( "CS STARTING!\n" );
 
   initLocks();
   initWaits();
