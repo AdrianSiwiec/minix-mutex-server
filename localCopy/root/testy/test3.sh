@@ -6,6 +6,14 @@ echo "test sprawdzajacy sygnaly, trwa ok 10 sekund"
 
 bin/test3 5 | sort> out/out3
 
+diff template/test3_template out/out3
+
+echo "template:"
+cat template/test3_template
+
+echo "out:"
+cat out/out3
+
 if [$(diff template/test3_template out/out3) = ""]; then
 	echo OK
 else

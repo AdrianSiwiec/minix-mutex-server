@@ -108,12 +108,16 @@ void broadcast( int callerId, int condId )
 
 void parseExitSignalBroadcasts( int procId, int relock )
 {
+  if ( verbose ) printf( "Removing from queues %d with relock = %d\n", procId, relock );
+
   for ( int i = 0; i < firstFreeCondIndex; i++ )
   {
     int mutexToLockOn;
 
-    if ( removeFromTwinQueues( waitingMutexIds + i, waitingMutexIds + i, procId, &mutexToLockOn ) && relock )
+    if ( removeFromTwinQueues( waitingCallerIds + i, waitingMutexIds + i, procId, &mutexToLockOn ) && relock )
     {
+      if ( verbose ) printf( "Relocing %d due to signal\n" );
+
       lock( procId, mutexToLockOn );
       break;
     }
