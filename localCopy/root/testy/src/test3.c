@@ -7,6 +7,7 @@
 
 void sighandler( int sig )
 {
+  printf( " INT \n" );
 }
 
 int main( int argc, char **argv )
