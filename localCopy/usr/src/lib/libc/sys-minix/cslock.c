@@ -2,7 +2,8 @@
 #include <minix/com.h>
 #include <stdio.h>
 
-int verbose = 0;
+#define verbose 0
+
 int isInitialized = 0;
 endpoint_t csEndpoint;
 
@@ -102,6 +103,18 @@ int cs_broadcast( int cond_var_id )
 
     _sendrec( csEndpoint, &m );
   } while ( m.m_type == CS_ANS_AGAIN );  // probably should not happen
+
+  return 0;
+}
+
+int cs_debug()
+{
+  if ( !isInitialized ) initialize();
+
+  message m;
+
+  m.m_type = CS_DEBUG_PRINT;
+  _sendrec( csEndpoint, &m );
 
   return 0;
 }

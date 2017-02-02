@@ -127,7 +127,7 @@ int removeFromTwinQueues( Queue *q, Queue *twin, int a, int *container )
     {
       if ( ptr->val == a )
       {
-        *container == twinPtr->val;
+        *container = twinPtr->val;
         removeQueueNode( ptr, father );
         removeQueueNode( twinPtr, twinFather );
         return 1;
@@ -146,7 +146,6 @@ int removeFromTwinQueues( Queue *q, Queue *twin, int a, int *container )
 
 void printQueue( Queue *q )
 {
-  printf( "Printing queue: " );
   QueueNode *tmp = q->root;
 
   while ( tmp != 0 )

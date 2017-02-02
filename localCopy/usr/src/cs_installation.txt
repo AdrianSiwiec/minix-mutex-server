@@ -1,0 +1,6 @@
+Instalalcja serwerow mutexow. Wydaje mi sie, ze jest zgodna ze specyfikacja, ale zalaczam ja na wypadek problemow.
+
+cd /usr/src; make includes; make do-lib
+cd /usr/src/releasetools; make services; make install
+cp /usr/src/etc/usr/rc /usr/etc
+reboot

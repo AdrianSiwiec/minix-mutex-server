@@ -3,7 +3,6 @@
 int identifier = 0x1234;
 endpoint_t who_e;
 int call_type;
-int verbose = 0;
 
 static void sef_cb_signal_handler( int signo );
 static int sef_cb_init_fresh( int UNUSED( type ), sef_init_info_t *UNUSED( info ) );
@@ -56,15 +55,19 @@ int main( int argc, char *argv[] )
         parseExitSignalBroadcasts( m.m1_i1, 1 );
         break;
 
-      case CS_EXIT_FROM_PM: 
+      case CS_EXIT_FROM_PM:
         parseExitLocks( m.m1_i1 );
         parseExitSignalBroadcasts( m.m1_i1, 0 );
+        break;
+
+      case CS_DEBUG_PRINT:
+        printLockQueues();
+        sendResponse( who_e, CS_ANS_OK );
         break;
 
       default:
         if ( verbose ) printf( "Ignoring unknown call type: %d\n", call_type );
     }
-
   }
 
   /* no way to get here */
@@ -79,7 +82,6 @@ static void sef_cb_signal_handler( int signo )
 
   cleanLocks();
   cleanWaits();
-
 }
 
 static int sef_cb_init_fresh( int UNUSED( type ), sef_init_info_t *UNUSED( info ) )

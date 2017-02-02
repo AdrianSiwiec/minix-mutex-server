@@ -1294,5 +1294,7 @@
 #define CS_SIGNAL_FROM_PM 20
 #define CS_EXIT_FROM_PM 21
 
+#define CS_DEBUG_PRINT 30
+
 
 /* _MINIX_COM_H */

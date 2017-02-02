@@ -79,9 +79,9 @@ void lock( int callerId, int mutexId )
   if ( verbose ) printf( "Got lock %d! callerId = %d\n", mutexId, callerId );
 }
 
-void unlock( int callerId, int mutexId, int notifyCaller )
+int unlock( int callerId, int mutexId, int notifyCaller )
 {
-  if ( verbose ) printf( "Unlocking %d...\n", callerId );
+  if ( verbose ) printf( "Unlocking %d held by %d...\n", mutexId, callerId );
 
   if ( !hasLock( callerId, mutexId ) )
   {
@@ -89,7 +89,7 @@ void unlock( int callerId, int mutexId, int notifyCaller )
 
     if ( notifyCaller ) sendResponse( callerId, CS_ANS_WRONG );
 
-    return;
+    return 0;
   }
 
   for ( int i = 0; i < firstFreeMutexIndex; i++ )
@@ -113,9 +113,11 @@ void unlock( int callerId, int mutexId, int notifyCaller )
 
       if ( notifyCaller ) sendResponse( callerId, CS_ANS_OK );
 
-      return;
+      return 1;
     }
   }
+
+  return 0;
 }
 
 int removeFromLockQueues( int procId )
@@ -132,7 +134,7 @@ int removeFromLockQueues( int procId )
 
 void parseNotifyLocks( int procId )
 {
-  if ( verbose ) printf( "PARSING NOTIFY procId = %d\n", procId );
+   if ( verbose ) printf( "PARSING NOTIFY procId = %d\n", procId );
 
   int wasInQueues = removeFromLockQueues( procId );
 
@@ -149,7 +151,18 @@ void parseExitLocks( int procId )
   {
     if ( mutexHolders[i] == procId )
     {
-      unlock( procId, mutexIds[i], 0 );
+      if ( unlock( procId, mutexIds[i], 0 ) ) i--;  // will check some queues twice, not a problem
     }
   }
+}
+
+void printLockQueues()
+{
+  for ( int i = 0; i < firstFreeMutexIndex; i++ )
+  {
+    printf( "Queue: %d\n, for mutex: %d, held by %d\n", i, mutexIds[i], mutexHolders[i] );
+    printQueue( lockQueues + i );
+  }
+
+  printf( "Non-empty queues: %d\n", firstFreeMutexIndex );
 }

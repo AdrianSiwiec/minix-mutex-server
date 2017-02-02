@@ -117,7 +117,7 @@ void parseExitSignalBroadcasts( int procId, int relock )
 
     if ( removeFromTwinQueues( waitingCallerIds + i, waitingMutexIds + i, procId, &mutexToLockOn ) && relock )
     {
-      if ( verbose ) printf( "Relocing %d due to signal\n" );
+      if ( verbose ) printf( "Relocking %d due to signal\n", mutexToLockOn );
 
       lock( procId, mutexToLockOn );
       break;
