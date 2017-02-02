@@ -13,7 +13,7 @@
 #include <unistd.h>
 
 #define MAX_MUTEXES 1030
-#define verbose 1
+#define verbose 0
 
 // Struct defs(!). Appropriate here?
 typedef struct
