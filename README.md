@@ -14,9 +14,11 @@ cs_broadcast(int cond_var_id) - ogłasza zdarzenie identyfikowane przez cond_var
 Można przyjąć że w każdym momencie działania serwera co najwyżej 1024 mutex’y są zarezerwowane.
 
 Installation:
-Copy localCopy to / in minix machine
+
+- Copy localCopy to / in minix machine
+
 Then execute as root:
-cd /usr/src; make includes; make do-lib
-cd /usr/src/releasetools; make services; make install
-cp /usr/src/etc/usr/rc /usr/etc
-reboot
+- cd /usr/src; make includes; make do-lib
+- cd /usr/src/releasetools; make services; make install
+- cp /usr/src/etc/usr/rc /usr/etc
+- reboot
